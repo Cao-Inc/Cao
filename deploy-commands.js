@@ -1,8 +1,12 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, token } = require('./config.json');
+const { isReplit, clientId, guildId } = require('./config.json');
+let { token } = require('./config.json');
 const helper = require('./helper');
 
+if (isReplit) {
+	token = process.env['tokenCao'];
+}
 
 const commands = [];
 

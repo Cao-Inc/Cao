@@ -1,7 +1,13 @@
 // Require the necessary discord.js classes
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
+
+const { isReplit } = require('./config.json');
+let { token } = require('./config.json');
 const helper = require('./helper');
+
+if (isReplit) {
+	token = process.env['tokenCao'];
+}
 
 require('./deploy-commands');
 
