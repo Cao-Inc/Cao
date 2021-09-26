@@ -1,0 +1,8 @@
+node_modules
+.env
+config.json
+interaction.js
+package-lock.json
+package.json
+test.js
+.replit
