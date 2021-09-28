@@ -1,8 +1,7 @@
 const dirTree = require('directory-tree');
-const Player = require('./player');
-const Database = require('@replit/database');
-
-const db = new Database();
+const Player = require('./models/player');
+const PlayerCommit = require('./models/playerCommit');
+const _db = require('./_db');
 
 const readDir = (path, callback) => {
 	const tree = dirTree(`./${path}/`, { extensions:/\.js$/ });
@@ -15,57 +14,48 @@ const readDir = (path, callback) => {
 	});
 };
 
+function randomChoice(arr) {
+	return arr[Math.floor(arr.length * Math.random())];
+}
+
+const updateData = (oldData, newData) => ({
+	...oldData,
+	...newData,
+});
+
 const createDataForNewPlayer = (user) => {
 	const newbieCoins = 50000;
 	const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date);
 	const player = new Player(user, newbieCoins, yesterday);
-	db.set(player.user.id, player)
-		.then(() => {
-			console.log(`Player ${player.user.id} joined game.`);
-		})
-		.catch(err => {
-			console.log(`Failed to create db for player ${player.user.id}`);
-			throw err;
+	_db.set(player.user.id, player);
+	console.log(`Player ${player.user.id} joined game.`);
+};
+
+const updatePlayerData = (discordId, newData) => {
+	_db.get(discordId)
+		.then(player => {
+			const updatedData = updateData(player, newData);
+			_db.set(discordId, updatedData);
 		});
 };
 
-const giveCoinsTo = (discordId, coins) => {
-	db.get(discordId)
-		.then(player => {
-			player.coins += coins;
-			db.set(discordId, player)
-				.then(() => {})
-				.catch((err) => {
-					console.log(err);
-					throw err;
-				});
+const addCommit = (key, discordId, betType, number, coins) => {
+	_db.get(key)
+		.then((todayCommits) => {
+			if (!todayCommits) todayCommits = {};
+			if (!todayCommits[discordId]) todayCommits[discordId] = new PlayerCommit();
+			else todayCommits[discordId] = new PlayerCommit(todayCommits[discordId].sh, todayCommits[discordId].gt);
+			todayCommits[discordId].update(betType, number, coins);
+			return todayCommits;
 		})
-		.catch((err) => {
-			console.log(`Failed when give coins.\nThere is no player with id: ${discordId}`);
-			throw err;
-		});
-};
-
-const updateLastReceiveDailyReward = (discordId, lastReceiveDailyReward) => {
-	db.get(discordId)
-		.then(player => {
-			player.lastReceiveDailyReward = lastReceiveDailyReward;
-			db.set(discordId, player)
-				.then(() => {})
-				.catch((err) => {
-					console.log(err);
-					throw err;
-				});
-		})
-		.catch((err) => {
-			console.log(`Failed when update lastReceiveDailyReward.\nThere is no player with id: ${discordId}`);
-			throw err;
-		});
+		.then((value) => _db.set(key, value));
 };
 
 module.exports = {
 	readDir,
+	updateData,
+	updatePlayerData,
 	createDataForNewPlayer,
-	giveCoinsTo,
-	updateLastReceiveDailyReward,
+	randomChoice,
+	addCommit,
 };

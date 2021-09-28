@@ -4,6 +4,10 @@ const { Client, Collection, Intents } = require('discord.js');
 const { isReplit } = require('./config.json');
 let { token } = require('./config.json');
 const helper = require('./helper');
+const calc = require('./loop/calc');
+const moment = require('moment-timezone');
+
+moment.tz.setDefault('Asia/Vietnam');
 
 if (isReplit) {
 	token = process.env['tokenCao'];
@@ -13,6 +17,8 @@ require('./deploy-commands');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+
+setInterval(() => calc(client), 1000);
 
 client.commands = new Collection();
 

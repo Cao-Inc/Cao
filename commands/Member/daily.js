@@ -1,20 +1,36 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const Database = require('@replit/database');
 
-const { REPLIT_DB_URL } = require('../../config.json');
 const helper = require('../../helper');
-
-const db = new Database(REPLIT_DB_URL);
+const _db = require('../../_db');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('dl')
+		.setName('daily')
 		.setDescription('Receive daily reward!'),
 
 	async execute(interaction) {
 		const today = new Date(Date.now());
-		db.get(interaction.user.id)
+		_db.get(interaction.user.id)
 			.then(async (player) => {
+				if (!player) {
+					await helper.createDataForNewPlayer(interaction.user);
+					await interaction.reply('Welcome, your newbie coins: **50000**!');
+
+					const dailyCoins = Math.floor(Math.random() * 40000) + 10000;
+					const totalCoins = 50000 + dailyCoins;
+
+					await helper.updatePlayerData(interaction.user.id, {
+						coins: totalCoins,
+						lastReceiveDailyReward: today,
+					});
+
+					setTimeout(async () => {
+						await interaction.editReply(`Your daily reward: ${dailyCoins}\nTotal coins: ${totalCoins}`);
+					}, 1000);
+
+					return;
+				}
+
 				const playerLastReceiveDailyReward = new Date(player.lastReceiveDailyReward);
 
 				if (playerLastReceiveDailyReward.getDate() === today.getDate()) {
@@ -23,19 +39,13 @@ module.exports = {
 				}
 
 				const dailyCoins = Math.floor(Math.random() * 40000) + 10000;
+				const totalCoins = player.coins + dailyCoins;
 
-				await helper.giveCoinsTo(interaction.user.id, dailyCoins);
-				await helper.updateLastReceiveDailyReward(interaction.user.id, today);
-				await interaction.reply(`Your daily reward: ${dailyCoins}`);
-			})
-			.catch(async (err) => {
-				await helper.createDataForNewPlayer(interaction.user);
-				await interaction.reply('Welcome, your newbie coins: **50000**!');
-				const dailyCoins = Math.floor(Math.random() * 40000) + 10000;
-
-				await helper.giveCoinsTo(interaction.user.id, dailyCoins);
-				await helper.updateLastReceiveDailyReward(interaction.user.id, today);
-				await interaction.editReply(`Your daily reward: ${dailyCoins}`);
+				await helper.updatePlayerData(interaction.user.id, {
+					coins: totalCoins,
+					lastReceiveDailyReward: today,
+				});
+				await interaction.reply(`Your daily reward: ${dailyCoins}.\nTotal coins: ${totalCoins}`);
 			});
 	},
 };
