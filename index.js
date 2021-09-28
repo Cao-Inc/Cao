@@ -1,17 +1,17 @@
 // Require the necessary discord.js classes
 const { Client, Collection, Intents } = require('discord.js');
+const moment = require('moment-timezone');
 
 const { isReplit, timezone } = require('./config.json');
 let { token } = require('./config.json');
 const helper = require('./helper');
 const loop = require('./loop');
-const moment = require('moment-timezone');
+const keepAlive = require('./server');
 
 moment.tz.setDefault(timezone);
 
-if (isReplit) {
-	token = process.env['tokenCao'];
-}
+if (isReplit) {token = process.env['tokenCao'];}
+
 
 require('./deploy-commands');
 
@@ -41,5 +41,7 @@ const setEvent = (path) => {
 
 helper.readDir('commands', setCommand);
 helper.readDir('events', setEvent);
+
+if (isReplit) keepAlive();
 
 client.login(token);
