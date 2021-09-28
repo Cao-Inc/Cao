@@ -1,7 +1,8 @@
 const Database = require('@replit/database');
-const { REPLIT_DB_URL } = require('./config.json');
+const { isReplit, REPLIT_DB_URL } = require('./config.json');
 
-const db = new Database(REPLIT_DB_URL);
+let db = new Database(REPLIT_DB_URL);
+if (isReplit) db = new Database();
 
 module.exports = {
 	get: (key) => db.get(key),
