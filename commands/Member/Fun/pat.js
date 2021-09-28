@@ -17,7 +17,7 @@ module.exports = {
 		axios.get('https://nekos.life/api/v2/img/pat')
 			.then(async function(res) {
 				const embed = new MessageEmbed()
-					.setDescription(`${interaction.user} pats ${user} <a:pat:892354838036361216>`)
+					.setDescription(`${interaction.user} pats ${user} <:Hehe:880852778304552983>`)
 					.setColor('#ff0000')
 					.setFooter('From Cáo 298 With Love ')
 					.setImage(`${res.data.url}`)
