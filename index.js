@@ -7,7 +7,7 @@ const helper = require('./helper');
 const calc = require('./loop/calc');
 const moment = require('moment-timezone');
 
-moment.tz.setDefault('Asia/Vietnam');
+moment.tz.setDefault('Asia/Ho_Chi_Minh');
 
 if (isReplit) {
 	token = process.env['tokenCao'];
