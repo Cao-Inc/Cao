@@ -2,13 +2,18 @@ module.exports = class PlayerCommit {
 	constructor(sh = {}, gt = {}) {
 		this.sh = sh;
 		this.gt = gt;
+		this.wonCoins = 0;
 	}
 
-	get totalCoins() {
+	get playedCoins() {
 		let total = 0;
 		for (const key in this.sh) total += this.sh[key];
 		for (const key in this.gt) total += this.gt[key];
 		return total;
+	}
+
+	addWonCoins(coins) {
+		this.wonCoins += coins;
 	}
 
 	update(type, number, coins) {

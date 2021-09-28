@@ -36,6 +36,12 @@ module.exports = {
 				return;
 			}
 
+			const hour = moment().hour();
+			if (hour >= 18) {
+				await interaction.reply('Đã hết thời gian nộp bài hôm nay.');
+				return;
+			}
+
 			const betType = interaction.options.getString('bettype');
 			const number = interaction.options.getNumber('number');
 			const coins = interaction.options.getNumber('coins');
