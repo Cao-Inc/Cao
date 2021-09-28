@@ -26,7 +26,7 @@ const updateData = (oldData, newData) => ({
 });
 
 const createDataForNewPlayer = (user) => {
-	const newbieCoins = 250000;
+	const newbieCoins = 1250000;
 	const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date);
 	const player = new Player(user, newbieCoins, yesterday);
 	_db.set(player.user.id, player);

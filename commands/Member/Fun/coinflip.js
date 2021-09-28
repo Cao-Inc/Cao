@@ -42,6 +42,11 @@ module.exports = {
 					return;
 				}
 
+				if (coins > 100000) {
+					await interaction.reply('Max coins: 100000');
+					return;
+				}
+
 				let msg = 'Chúc mừng bạn đã';
 				const myChoice = helper.randomChoice(['tail', 'head']);
 				if (side === myChoice) {
