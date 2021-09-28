@@ -4,20 +4,20 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('kiss')
-		.setDescription('Kiss someone!')
+		.setName('pat')
+		.setDescription('pat someone!')
 		.addUserOption(user =>
 			user
 				.setName('user')
-				.setDescription('User to kiss')
+				.setDescription('User to pat')
 				.setRequired(true)),
 	async execute(interaction) {
 		const user = interaction.options.getUser('user');
 
-		axios.get('https://nekos.life/api/v2/img/kiss')
+		axios.get('https://nekos.life/api/v2/img/pat')
 			.then(async function(res) {
 				const embed = new MessageEmbed()
-					.setDescription(`${interaction.user} is kissing ${user} 〃ω〃`)
+					.setDescription(`${interaction.user} pats ${user} <a:pat:892354838036361216>`)
 					.setColor('#ff0000')
 					.setFooter('From Cáo 298 With Love ')
 					.setImage(`${res.data.url}`)
