@@ -14,7 +14,7 @@ module.exports = (client) => {
 		timezone: timezone,
 	});
 
-	cron.schedule('40 12 * * *', () => {
+	cron.schedule('0 13 * * *', () => {
 		dailyGenshin(client);
 	}, {
 		scheduled: true,
