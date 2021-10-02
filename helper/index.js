@@ -4,6 +4,7 @@ const Player = require('../models/player');
 const PlayerCommit = require('../models/playerCommit');
 const _db = require('../_db');
 const parseAPIxoso = require('./parseAPIxoso');
+const genEmbed = require('./generateEmbed');
 
 const readDir = (path, callback) => {
 	const tree = dirTree(`./${path}/`, { extensions:/\.js$/ });
@@ -61,4 +62,5 @@ module.exports = {
 	randomChoice,
 	addCommit,
 	parseAPIxoso,
+	genEmbed,
 };

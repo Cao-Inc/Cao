@@ -15,11 +15,10 @@ module.exports = {
 			.then(async (player) => {
 				if (!player) {
 					await helper.createDataForNewPlayer(interaction.user);
-					const embed = new MessageEmbed()
-						.setDescription('Welcome new player, give you **50000** <:coin:893675328273252362> to drink milk tea! <:KannaSip:880852779386699826>')
-						.setColor('#57EDAC')
-						.setFooter('From Cáo 298 With Love ')
-						.setTimestamp();
+					const embed = new helper.genEmbed(
+						'Welcome new player, give you **50000** <:coin:893675328273252362> to drink milk tea! <:KannaSip:880852779386699826>',
+						'#57EDAC',
+					);
 					await interaction.reply({ embeds: [embed] });
 					// await interaction.reply('Welcome, your newbie coins: **50000**!');
 

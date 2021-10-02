@@ -4,6 +4,16 @@ const { MessageEmbed } = require('discord.js');
 const helper = require('../../helper');
 const _db = require('../../_db');
 
+const genEmbed = (msg, color) => {
+	const embed = new MessageEmbed()
+		.setDescription(msg)
+		.setColor(color)
+		.setFooter('From Cáo 298 With Love ')
+		.setTimestamp();
+
+	return embed;
+};
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('give')
@@ -26,11 +36,10 @@ module.exports = {
 		const coins = interaction.options.getNumber('coins');
 
 		if (interaction.user.id === receiver.id) {
-			const embed = new MessageEmbed()
-				.setDescription('Không thể tự bố thí cho bản thân!')
-				.setColor('#FF0000')
-				.setFooter('From Cáo 298 With Love ')
-				.setTimestamp();
+			const embed = helper.genEmbed(
+				'Không thể tự bố thí cho bản thân!',
+				'#FF0000',
+			);
 			await interaction.reply({ embeds: [embed] });
 			// await interaction.reply('Không thể tự bố thí cho bản thân');
 			return;
@@ -40,33 +49,30 @@ module.exports = {
 			.then(async (senderData) => {
 				if (!senderData) {
 					await helper.createDataForNewPlayer(interaction.user);
-					const embed = new MessageEmbed()
-						.setDescription('Welcome new player, give you **50000** <:coin:893675328273252362>\nTry give one more time?')
-						.setColor('#57EDAC')
-						.setFooter('From Cáo 298 With Love ')
-						.setTimestamp();
+					const embed = genEmbed(
+						'Welcome new player, give you **50000** <:coin:893675328273252362>\nTry give one more time?',
+						'#57EDAC',
+					);
 					await interaction.reply({ embeds: [embed] });
 					// await interaction.reply('Welcome, your newbie coins: **50000**!\nTry give one more time?');
 					return;
 				}
 
 				if (coins <= 0) {
-					const embed = new MessageEmbed()
-						.setDescription('Please enter a valid amount of coins.')
-						.setColor('#FF0000')
-						.setFooter('From Cáo 298 With Love ')
-						.setTimestamp();
+					const embed = new genEmbed(
+						'Please enter a valid amount of coins.',
+						'#FF0000',
+					);
 					await interaction.reply({ embeds: [embed] });
 					// await interaction.reply('Please enter a valid amount of coins.');
 					return;
 				}
 
 				if (coins > senderData.coins) {
-					const embed = new MessageEmbed()
-						.setDescription('Bạn không có đủ <:coin:893675328273252362>!')
-						.setColor('#FF0000')
-						.setFooter('From Cáo 298 With Love ')
-						.setTimestamp();
+					const embed = new genEmbed(
+						'Bạn không có đủ <:coin:893675328273252362>!',
+						'#FF0000',
+					);
 					await interaction.reply({ embeds: [embed] });
 					// await interaction.reply('Bạn không có đủ coins');
 					return;
@@ -75,11 +81,10 @@ module.exports = {
 				_db.get(receiver.id)
 					.then(async (receiverData) => {
 						if (!receiverData) {
-							const embed = new MessageEmbed()
-								.setDescription(`${receiver} chưa tham gia game!`)
-								.setColor('#FF0000')
-								.setFooter('From Cáo 298 With Love ')
-								.setTimestamp();
+							const embed = new genEmbed(
+								`${receiver} chưa tham gia game!`,
+								'#FF0000',
+							);
 							await interaction.reply({ embeds: [embed] });
 							// await interaction.reply(`Member ${receiver} chưa tham gia game`);
 							return;
@@ -87,11 +92,10 @@ module.exports = {
 
 						await helper.updatePlayerData(senderData.user.id, { coins: senderData.coins - coins });
 						await helper.updatePlayerData(receiverData.user.id, { coins: receiverData.coins + coins });
-						const embed = new MessageEmbed()
-							.setDescription(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** <:coin:893675328273252362>.`)
-							.setColor('#32FF00')
-							.setFooter('From Cáo 298 With Love ')
-							.setTimestamp();
+						const embed = new genEmbed(
+							`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** <:coin:893675328273252362>.`,
+							'#32FF00',
+						);
 						await interaction.reply({ embeds: [embed] });
 						// await interaction.reply(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** coins.`);
 					});
