@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 const helper = require('../../helper');
 const _db = require('../../_db');
@@ -25,7 +26,13 @@ module.exports = {
 		const coins = interaction.options.getNumber('coins');
 
 		if (interaction.user.id === receiver.id) {
-			await interaction.reply('Không thể tự bố thí cho bản thân');
+			const embed = new MessageEmbed()
+				.setDescription('Không thể tự bố thí cho bản thân!')
+				.setColor('#FF0000')
+				.setFooter('From Cáo 298 With Love ')
+				.setTimestamp();
+			await interaction.reply({ embeds: [embed] });
+			// await interaction.reply('Không thể tự bố thí cho bản thân');
 			return;
 		}
 
@@ -33,30 +40,60 @@ module.exports = {
 			.then(async (senderData) => {
 				if (!senderData) {
 					await helper.createDataForNewPlayer(interaction.user);
-					await interaction.reply('Welcome, your newbie coins: **50000**!\nTry give one more time?');
+					const embed = new MessageEmbed()
+						.setDescription('Welcome new player, give you **50000** <:coin:893675328273252362>\nTry give one more time?')
+						.setColor('#57EDAC')
+						.setFooter('From Cáo 298 With Love ')
+						.setTimestamp();
+					await interaction.reply({ embeds: [embed] });
+					// await interaction.reply('Welcome, your newbie coins: **50000**!\nTry give one more time?');
 					return;
 				}
 
 				if (coins <= 0) {
-					await interaction.reply('Please enter a valid amount of coins.');
+					const embed = new MessageEmbed()
+						.setDescription('Please enter a valid amount of coins.')
+						.setColor('#FF0000')
+						.setFooter('From Cáo 298 With Love ')
+						.setTimestamp();
+					await interaction.reply({ embeds: [embed] });
+					// await interaction.reply('Please enter a valid amount of coins.');
 					return;
 				}
 
 				if (coins > senderData.coins) {
-					await interaction.reply('Bạn không có đủ coins');
+					const embed = new MessageEmbed()
+						.setDescription('Bạn không có đủ coins!')
+						.setColor('#FF0000')
+						.setFooter('From Cáo 298 With Love ')
+						.setTimestamp();
+					await interaction.reply({ embeds: [embed] });
+					// await interaction.reply('Bạn không có đủ coins');
 					return;
 				}
 
 				_db.get(receiver.id)
 					.then(async (receiverData) => {
 						if (!receiverData) {
-							await interaction.reply(`Member ${receiver} chưa tham gia game`);
+							const embed = new MessageEmbed()
+								.setDescription(`${receiver} chưa tham gia game!`)
+								.setColor('#FF0000')
+								.setFooter('From Cáo 298 With Love ')
+								.setTimestamp();
+							await interaction.reply({ embeds: [embed] });
+							// await interaction.reply(`Member ${receiver} chưa tham gia game`);
 							return;
 						}
 
 						await helper.updatePlayerData(senderData.user.id, { coins: senderData.coins - coins });
 						await helper.updatePlayerData(receiverData.user.id, { coins: receiverData.coins + coins });
-						await interaction.reply(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** coins.`);
+						const embed = new MessageEmbed()
+							.setDescription(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** coins.`)
+							.setColor('#32FF00')
+							.setFooter('From Cáo 298 With Love ')
+							.setTimestamp();
+						await interaction.reply({ embeds: [embed] });
+						// await interaction.reply(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** coins.`);
 					});
 			});
 	},

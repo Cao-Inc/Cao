@@ -15,7 +15,7 @@ module.exports = {
 			.then(async (player) => {
 				if (player) {
 					const embed = new MessageEmbed()
-						.setDescription(`<:balance:893671642650267758> You has: ${player.coins} <:coin:893675328273252362>`)
+						.setDescription(`<:balance:893671642650267758> You has: **${player.coins}** <:coin:893675328273252362>`)
 						.setColor('#58ED57')
 						.setFooter('From Cáo 298 With Love ')
 						.setTimestamp();
