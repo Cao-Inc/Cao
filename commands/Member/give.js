@@ -63,7 +63,7 @@ module.exports = {
 
 				if (coins > senderData.coins) {
 					const embed = new MessageEmbed()
-						.setDescription('Bạn không có đủ coins!')
+						.setDescription('Bạn không có đủ <:coin:893675328273252362>!')
 						.setColor('#FF0000')
 						.setFooter('From Cáo 298 With Love ')
 						.setTimestamp();
@@ -88,7 +88,7 @@ module.exports = {
 						await helper.updatePlayerData(senderData.user.id, { coins: senderData.coins - coins });
 						await helper.updatePlayerData(receiverData.user.id, { coins: receiverData.coins + coins });
 						const embed = new MessageEmbed()
-							.setDescription(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** coins.`)
+							.setDescription(`<@${senderData.user.id}> bố thí cho <@${receiverData.user.id}> **${coins}** <:coin:893675328273252362>.`)
 							.setColor('#32FF00')
 							.setFooter('From Cáo 298 With Love ')
 							.setTimestamp();

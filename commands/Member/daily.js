@@ -33,7 +33,7 @@ module.exports = {
 
 					setTimeout(async () => {
 						const embed2 = new MessageEmbed()
-							.setDescription(`Your daily reward: **${dailyCoins}** <:coin:893675328273252362>.\n<:balance:893671642650267758> Your balance: ${totalCoins} <:coin:893675328273252362>`)
+							.setDescription(`Your daily reward: **${dailyCoins}** <:coin:893675328273252362>.\n<:balance:893671642650267758> Your balance: **${totalCoins}** <:coin:893675328273252362>.`)
 							.setColor('#57EDAC')
 							.setFooter('From Cáo 298 With Love ')
 							.setTimestamp();
@@ -65,7 +65,7 @@ module.exports = {
 					lastReceiveDailyReward: today,
 				});
 				const embed = new MessageEmbed()
-					.setDescription(`Your daily reward: **${dailyCoins}** <:coin:893675328273252362>.\n<:balance:893671642650267758> Your balance: ${totalCoins} <:coin:893675328273252362>`)
+					.setDescription(`Your daily reward: **${dailyCoins}** <:coin:893675328273252362>.\n<:balance:893671642650267758> Your balance: **${totalCoins}** <:coin:893675328273252362>.`)
 					.setColor('#57EDAC')
 					.setFooter('From Cáo 298 With Love ')
 					.setTimestamp();
